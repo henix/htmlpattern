@@ -90,16 +90,20 @@ public class HtmlPattern implements IHtmlPattern {
 		}
 	}
 
+	public HtmlPattern(NodeMatcher nodeMatcher, CallbackGroup callbacks) {
+		this(nodeMatcher, null, callbacks);
+	}
+
+	public HtmlPattern(NodeMatcher nodeMatcher) {
+		this(nodeMatcher, null, null);
+	}
+
 	public HtmlPattern(String nodePatt, EnumSet<IHtmlPattern.CollectOption> collectOptions, CallbackGroup callbacks) {
 		this(NodeMatcherCompiler.compile(nodePatt), collectOptions, callbacks);
 	}
 
 	public HtmlPattern(String nodePatt, CallbackGroup callbacks) {
 		this(nodePatt, null, callbacks);
-	}
-
-	public HtmlPattern(NodeMatcher nodeMatcher) {
-		this(nodeMatcher, null, null);
 	}
 
 	public HtmlPattern(String nodePatt) {
