@@ -88,3 +88,11 @@ What if you define a HtmlPattern ?
 The code structured just as how the XML structured. And it's declarative.
 
 A complete example (including callback): [https://github.com/henix/htmlpattern/blob/master/src/main/java/henix/htmlpattern/example/PomParser.java](https://github.com/henix/htmlpattern/blob/master/src/main/java/henix/htmlpattern/example/PomParser.java)
+
+## HTML parsing
+
+To parse HTML, htmlpattern should be used with [nekohtml](http://nekohtml.sourceforge.net/)'s `HTMLConfiguration`.
+
+## License
+
+Apache 2.0 license
