@@ -7,6 +7,6 @@ public class NopCallbackGroup implements CallbackGroup {
 	public void start(String $tag, XMLAttributes $attrs) {
 	}
 
-	public void end(HtmlPattern $) {
+	public void end(IHtmlPattern $) {
 	}
 }

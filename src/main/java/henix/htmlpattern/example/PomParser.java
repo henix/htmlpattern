@@ -10,6 +10,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import henix.htmlpattern.HtmlPattern;
+import henix.htmlpattern.IHtmlPattern;
 import henix.htmlpattern.IHtmlPattern.CollectOption;
 import henix.htmlpattern.NopCallbackGroup;
 import henix.htmlpattern.example.Pom.Dependency;
@@ -26,7 +27,7 @@ public class PomParser {
 		rootPattern = new HtmlPattern("project")
 			.child(new HtmlPattern("name", EnumSet.of(CollectOption.OWNTEXT), new NopCallbackGroup(){
 				@Override
-				public void end(HtmlPattern $) {
+				public void end(IHtmlPattern $) {
 					pom.name = $.owntext();
 				}
 			}))
@@ -42,26 +43,26 @@ public class PomParser {
 						curDependency = new Dependency();
 					}
 					@Override
-					public void end(HtmlPattern $) {
+					public void end(IHtmlPattern $) {
 						pom.dependencies.add(curDependency);
 						curDependency = null;
 					}
 				})
 					.child(new HtmlPattern("groupId", EnumSet.of(CollectOption.OWNTEXT), new NopCallbackGroup(){
 						@Override
-						public void end(HtmlPattern $) {
+						public void end(IHtmlPattern $) {
 							curDependency.groupId = $.owntext();
 						}
 					}))
 					.child(new HtmlPattern("artifactId", EnumSet.of(CollectOption.OWNTEXT), new NopCallbackGroup(){
 						@Override
-						public void end(HtmlPattern $) {
+						public void end(IHtmlPattern $) {
 							curDependency.artifactId = $.owntext();
 						}
 					}))
 					.child(new HtmlPattern("version", EnumSet.of(CollectOption.OWNTEXT), new NopCallbackGroup(){
 						@Override
-						public void end(HtmlPattern $) {
+						public void end(IHtmlPattern $) {
 							curDependency.version = $.owntext();
 						}
 					}))
