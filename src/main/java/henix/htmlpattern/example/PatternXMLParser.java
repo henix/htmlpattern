@@ -9,15 +9,13 @@ import org.apache.xerces.xni.XMLAttributes;
 import org.apache.xerces.xni.XMLString;
 import org.apache.xerces.xni.XNIException;
 
-import com.google.common.base.Preconditions;
-
 public class PatternXMLParser extends AbstractSAXParser{
 
 	private HtmlPattern rootPattern;
 
 	public PatternXMLParser(HtmlPattern rootPattern) {
 		super(new XML11Configuration());
-		this.rootPattern = Preconditions.checkNotNull(rootPattern);
+		this.rootPattern = rootPattern;
 	}
 
 	@Override

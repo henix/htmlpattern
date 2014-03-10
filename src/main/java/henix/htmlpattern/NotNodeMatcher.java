@@ -2,14 +2,12 @@ package henix.htmlpattern;
 
 import org.apache.xerces.xni.XMLAttributes;
 
-import com.google.common.base.Preconditions;
-
 public class NotNodeMatcher implements NodeMatcher {
 
-	private NodeMatcher nodeMatcher;
+	private final NodeMatcher nodeMatcher;
 
 	public NotNodeMatcher(NodeMatcher nodeMatcher) {
-		this.nodeMatcher = Preconditions.checkNotNull(nodeMatcher);
+		this.nodeMatcher = nodeMatcher;
 	}
 
 	public boolean matches(String tag, XMLAttributes attrs) {

@@ -10,8 +10,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.xerces.xni.XMLAttributes;
 import org.apache.xerces.xni.XMLString;
 
-import com.google.common.base.Preconditions;
-
 /**
  * HtmlPattern 是一个树模式。它可以在一颗 DOM 树上匹配一个 DOM 子树。
  *
@@ -74,7 +72,9 @@ public class HtmlPattern implements IHtmlPattern {
 	private StringBuilder owntext = null;
 
 	public HtmlPattern(NodeMatcher nodeMatcher, EnumSet<IHtmlPattern.CollectOption> collectOptions, CallbackGroup callbacks) {
-		this.nodeMatcher = Preconditions.checkNotNull(nodeMatcher);
+		if (nodeMatcher == null) throw new NullPointerException();
+
+		this.nodeMatcher = nodeMatcher;
 		this.callbacks = callbacks;
 
 		if (collectOptions != null) {
@@ -127,7 +127,8 @@ public class HtmlPattern implements IHtmlPattern {
 	 * 匹配第 seq 次出现
 	 */
 	public HtmlPattern child(int seq, IHtmlPattern treePattern) {
-		Preconditions.checkArgument(seq > 0);
+		if (seq <= 0) throw new IllegalArgumentException();
+
 		sub(RangeChild, seq, treePattern);
 		return this;
 	}
@@ -141,7 +142,8 @@ public class HtmlPattern implements IHtmlPattern {
 	 * 匹配第 n 个 child
 	 */
 	public HtmlPattern nthChild(int n, IHtmlPattern treePattern) {
-		Preconditions.checkArgument(n > 0);
+		if (n <= 0) throw new IllegalArgumentException();
+
 		sub(n, SeqAll, treePattern);
 		return this;
 	}
@@ -150,7 +152,8 @@ public class HtmlPattern implements IHtmlPattern {
 	 * 匹配第 seq 次出现
 	 */
 	public HtmlPattern descend(int seq, IHtmlPattern treePattern) {
-		Preconditions.checkArgument(seq > 0);
+		if (seq <= 0) throw new IllegalArgumentException();
+
 		sub(RangeDescendence, seq, treePattern);
 		return this;
 	}
@@ -160,8 +163,9 @@ public class HtmlPattern implements IHtmlPattern {
 	}
 
 	public void characters(XMLString xmlString) {
-		Preconditions.checkState(!ended, "ended but char " + xmlString.toString());
-		Preconditions.checkState(depth > 0, "depth = " + depth);
+		if (ended) throw new IllegalStateException("ended but char " + xmlString.toString());
+		if (depth <= 0) throw new IllegalStateException("depth = " + depth);
+
 		if (text != null) {
 			text.append(xmlString.ch, xmlString.offset, xmlString.length);
 		}
@@ -181,7 +185,7 @@ public class HtmlPattern implements IHtmlPattern {
 			sb.append("<br/>");
 		} else {
 			sb.append('<').append(tag.toLowerCase());
-			int len = attrs.getLength();
+			final int len = attrs.getLength();
 			for (int i = 0; i < len; i++) {
 				sb.append(' ').append(attrs.getQName(i)).append("=\"").append(StringEscapeUtils.escapeXml(attrs.getValue(i))).append('"');
 			}
@@ -196,7 +200,8 @@ public class HtmlPattern implements IHtmlPattern {
 	}
 
 	public void startTag(String tag, XMLAttributes attrs) {
-		Preconditions.checkState(!ended, "ended but startTag " + tag);
+		if (ended) throw new IllegalStateException("ended but startTag " + tag);
+
 		if (depth > 0) {
 			if (html != null) {
 				acchtml(tag, attrs, html);
@@ -228,9 +233,11 @@ public class HtmlPattern implements IHtmlPattern {
 	}
 
 	public void endTag(String tag) {
-		Preconditions.checkState(!ended, "ended but endTag " + tag);
+		if (ended) throw new IllegalStateException("ended but endTag " + tag);
+
 		depth--;
-		Preconditions.checkState(depth >= 0, "depth = " + depth);
+		if (depth < 0) throw new IllegalStateException("depth = " + depth);
+
 		if (depth == 0) {
 			if (callbacks != null) {
 				callbacks.end(this);

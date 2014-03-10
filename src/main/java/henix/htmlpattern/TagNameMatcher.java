@@ -2,17 +2,15 @@ package henix.htmlpattern;
 
 import org.apache.xerces.xni.XMLAttributes;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Match a HTML tag
  */
 public class TagNameMatcher implements NodeMatcher {
 
-	private String tagName;
+	private final String tagName;
 
 	public TagNameMatcher(String tagName) {
-		this.tagName = Preconditions.checkNotNull(tagName);
+		this.tagName = tagName;
 	}
 
 	public boolean matches(String tagName, XMLAttributes attrs) {

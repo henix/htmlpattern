@@ -2,22 +2,21 @@ package henix.htmlpattern;
 
 import org.apache.xerces.xni.XMLAttributes;
 
-import com.google.common.base.Preconditions;
-
 public class ClassNameMatcher implements NodeMatcher {
 
-	private String className;
+	private final String className;
 
 	public ClassNameMatcher(String className) {
-		this.className = Preconditions.checkNotNull(className);
+		if (className == null) throw new NullPointerException();
+		this.className = className;
 	}
 
 	public boolean matches(String tag, XMLAttributes attrs) {
-		String clazz = attrs.getValue("class");
+		final String clazz = attrs.getValue("class");
 		if (clazz != null) {
-			int start = clazz.indexOf(className);
+			final int start = clazz.indexOf(className);
 			if (start != -1) {
-				int end = start + className.length();
+				final int end = start + className.length();
 				if ((start == 0 || clazz.charAt(start - 1) == ' ') && (end == clazz.length() || clazz.charAt(end) == ' ')) {
 					return true;
 				}

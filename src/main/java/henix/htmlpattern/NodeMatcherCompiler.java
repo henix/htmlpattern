@@ -2,7 +2,6 @@ package henix.htmlpattern;
 
 import java.util.ArrayList;
 import org.apache.commons.lang3.CharUtils;
-import com.google.common.base.Preconditions;
 
 /**
  * 将表示 css query 的字符串编译成 NodeMatcher
@@ -19,7 +18,8 @@ public class NodeMatcherCompiler {
 	private int endpos;
 
 	public NodeMatcherCompiler(String input) {
-		this.input = Preconditions.checkNotNull(input);
+		if (input == null) throw new NullPointerException();
+		this.input = input;
 		pos = 0;
 		endpos = input.length();
 	}
@@ -147,7 +147,7 @@ public class NodeMatcherCompiler {
 		NodeMatcher nv;
 		while (true) {
 			if ((tmp = idname()) != null) {
-				Preconditions.checkArgument(id == null, "You can't specify 2 ids: " + tmp);
+				if (id != null) throw new IllegalArgumentException("You can't specify 2 ids: " + tmp);
 				id = tmp;
 				continue;
 			}
